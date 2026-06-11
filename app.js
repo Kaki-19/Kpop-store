@@ -62,8 +62,6 @@ io.on('connection', (socket) => {
 app.use('/auth', require('./routes/auth'));
 app.use('/productos', require('./routes/Productos'));
 app.use('/pedidos', require('./routes/pedidos'));
-
-// Registro blindado para el enrutador del carrito
 const carritoRouter = require('./routes/Carrito');
 app.use('/carrito', carritoRouter);
 app.use('/Carrito', carritoRouter); // Resguardo en caso de conflictos de mayúsculas en el cliente
