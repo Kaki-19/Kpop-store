@@ -64,8 +64,7 @@ app.use('/productos', require('./routes/Productos'));
 app.use('/pedidos', require('./routes/pedidos'));
 const carritoRouter = require('./routes/Carrito');
 app.use('/carrito', carritoRouter);
-app.use('/Carrito', carritoRouter); // Resguardo en caso de conflictos de mayúsculas en el cliente
-
+app.use('/Carrito', carritoRouter);
 app.get('/', (req, res) => res.redirect('/productos'));
 
 const PORT = process.env.PORT || 3000;
