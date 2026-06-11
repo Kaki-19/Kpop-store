@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - KPop Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: #fdf6ff; min-height: 100vh; }
+    nav {
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(255,182,217,0.2);
+      border-bottom: 2px solid #ffe4f3;
+    }
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff9de2, #b39ddb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links a { color: #aaa; text-decoration: none; margin-left: 1.5rem; font-weight: 700; }
+    .nav-links a:hover { color: #ff9de2; }
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; }
+    h1 { font-size: 1.8rem; font-weight: 800; color: #555; margin-bottom: 1.5rem; }
+    h2 { font-size: 1.2rem; font-weight: 800; color: #555; margin-bottom: 1rem; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(255,182,217,0.15);
+      border: 2px solid #ffeef8;
+      text-align: center;
+    }
+    .stat-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 1.8rem; font-weight: 800; color: #ff9de2; }
+    .stat-label { font-size: 0.85rem; color: #aaa; font-weight: 600; margin-top: 4px; }
+    .corte-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 16px rgba(255,182,217,0.15);
+      border: 2px solid #ffeef8;
+      margin-bottom: 2rem;
+    }
+    .corte-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .corte-item {
+      background: #fdf6ff;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #f0e6ff;
+    }
+    .corte-item .valor { font-size: 1.4rem; font-weight: 800; }
+    .corte-item .etiqueta { font-size: 0.8rem; color: #aaa; font-weight: 600; margin-top: 4px; }
+    .color-pendiente { color: #f7c05e; }
+    .color-enviado { color: #7eb8f7; }
+    .color-entregado { color: #5ec98a; }
+    .color-cancelado { color: #ff6b9d; }
+    .color-total { color: #ff9de2; }
+    .top-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 16px rgba(255,182,217,0.15);
+      border: 2px solid #ffeef8;
+    }
+    .producto-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #ffeef8;
+    }
+    .producto-row:last-child { border-bottom: none; }
+    .producto-nombre { font-weight: 700; color: #555; }
+    .producto-artista { font-size: 0.82rem; color: #aaa; }
+    .producto-cantidad { font-weight: 800; color: #ff9de2; }
+    .producto-ingresos { font-size: 0.82rem; color: #aaa; }
+    .empty { text-align: center; padding: 2rem; color: #ccc; }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-logo">KPop Store</span>
+    <div class="nav-links">
+      <a href="/pedidos/dashboard">Dashboard</a>
+      <a href="/productos">Productos</a>
+      <a href="/pedidos">Pedidos</a>
+      <a href="/auth/logout">Salir (<%= usuario %>)</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-emoji"></div>
+        <div class="stat-value">$<%= totalVentas %></div>
+        <div class="stat-label">Total en ventas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-emoji"></div>
+        <div class="stat-value"><%= totalPedidos %></div>
+        <div class="stat-label">Pedidos totales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-emoji"></div>
+        <div class="stat-value"><%= pedidosPendientes %></div>
+        <div class="stat-label">Pendientes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-emoji"></div>
+        <div class="stat-value"><%= pedidosEntregados %></div>
+        <div class="stat-label">Entregados</div>
+      </div>
+    </div>
+    
+    <div class="corte-card">
+      <h2>Corte de Caja</h2>
+      <div class="corte-grid">
+        <div class="corte-item">
+          <div class="valor color-total">$<%= totalVentas %></div>
+          <div class="etiqueta">Ingresos totales</div>
+        </div>
+        <div class="corte-item">
+          <div class="valor color-pendiente"><%= pedidosPendientes %></div>
+          <div class="etiqueta">Pendientes</div>
+        </div>
+        <div class="corte-item">
+          <div class="valor color-enviado"><%= pedidosEnviados %></div>
+          <div class="etiqueta">Enviados</div>
+        </div>
+        <div class="corte-item">
+          <div class="valor color-entregado"><%= pedidosEntregados %></div>
+          <div class="etiqueta">Entregados</div>
+        </div>
+        <div class="corte-item">
+          <div class="valor color-cancelado"><%= pedidosCancelados %></div>
+          <div class="etiqueta">Cancelados</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="top-card">
+      <h2>Productos más vendidos</h2>
+      <% if (topProductos.length === 0) { %>
+        <div class="empty">No hay datos de ventas aún</div>
+      <% } else { %>
+        <% topProductos.forEach((p, i) => { %>
+        <div class="producto-row">
+          <div>
+            <div class="producto-nombre"><%= i+1 %>. <%= p.nombre %></div>
+            <div class="producto-artista"> <%= p.artista %></div>
+          </div>
+          <div style="text-align:right">
+            <div class="producto-cantidad"><%= p.cantidad %> vendidos</div>
+            <div class="producto-ingresos">$<%= p.ingresos %> en ingresos</div>
+          </div>
+        </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+  <div id="toast-notif" style="
+    position: fixed; bottom: 30px; right: -450px; background: white; 
+    padding: 1.2rem 1.8rem; border-radius: 20px; font-weight: 700; color: #555;
+    box-shadow: 0 8px 30px rgba(179,157,219,0.3); border: 2px solid #ffeef8;
+    display: flex; align-items: center; gap: 14px; z-index: 99999;
+    transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 0.95rem;
+  ">
+    <span style="font-size: 1.6rem;"></span>
+    <div>
+      <span style="color: #ff9de2; display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Nueva Venta</span>
+      <span>¡El panel se está actualizando!</span>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Cuando se registra una compra (desde carrito o formulario directo)
+    socket.on('nuevoPedido', (data) => {
+      console.log(" Venta detectada en tiempo real:", data);
+      
+      // Deslizar el Toast de notificación desde la derecha
+      const toast = document.getElementById('toast-notif');
+      toast.style.right = '30px';
+
+      // Esperar 2.5 segundos para que el administrador vea el aviso y recargar
+      setTimeout(() => {
+        window.location.reload();
+      }, 2500);
+    });
+
+    // Si se cambia un estado de pedido o se elimina desde otra pestaña de control
+    socket.on('actualizarDashboard', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

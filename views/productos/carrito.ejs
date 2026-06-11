@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Carrito - KPop Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: #fdf6ff; min-height: 100vh; }
+    nav { background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 12px rgba(255,182,217,0.2); border-bottom: 2px solid #ffe4f3; }
+    .nav-logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #ff9de2, #b39ddb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links a { color: #aaa; text-decoration: none; margin-left: 1.5rem; font-weight: 700; font-size: 0.95rem; }
+    .nav-links a:hover { color: #ff9de2; }
+    .container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    h1 { font-size: 1.8rem; font-weight: 800; color: #555; margin-bottom: 1.5rem; }
+    .cart-layout { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .cart-items { flex: 2; min-width: 320px; }
+    .cart-resume { flex: 1; min-width: 280px; }
+    .card { background: white; border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 16px rgba(255,182,217,0.15); border: 2px solid #ffeef8; }
+    .item-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #ffeef8; }
+    .item-img { width: 70px; height: 70px; object-fit: cover; border-radius: 12px; border: 2px solid #ffeef8; }
+    .item-details { flex: 1; }
+    .item-price { font-weight: 800; color: #ff9de2; font-size: 1.1rem; }
+    .resume-title { font-size: 1.1rem; font-weight: 800; color: #555; margin-bottom: 1rem; border-bottom: 2px solid #ffe4f3; padding-bottom: 0.5rem; }
+    .total-price { font-size: 1.5rem; font-weight: 800; color: #555; margin: 1rem 0; text-align: center; }
+    .btn { padding: 12px 20px; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 700; cursor: pointer; text-decoration: none; display: block; text-align: center; width: 100%; transition: opacity 0.2s; }
+    .btn-primary { background: linear-gradient(135deg, #ff9de2, #b39ddb); color: white; }
+    .btn-secondary { background: #eee; color: #777; margin-top: 0.5rem; }
+    .empty-cart { text-align: center; padding: 3rem; color: #bbb; background: white; border-radius: 20px; border: 2px solid #ffeef8; }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-logo">KPop Store</span>
+    <div class="nav-links">
+      <a href="/productos">Tienda</a>
+      <a href="/carrito" style="color: #ff9de2;"> Carrito</a>
+      <a href="/auth/logout">Salir (<%= usuario %>)</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1> Mi Carrito de Compras</h1>
+
+    <% if (locals.success) { %>
+      <div class="card" style="text-align: center; padding: 4rem;">
+        <div style="font-size: 5rem; margin-bottom: 1rem;">🌸</div>
+        <h2 style="color: #ff9de2;">¡Pedido Exitoso!</h2>
+        <p style="color: #888; margin-top: 1rem; margin-bottom: 2rem;">Muchas gracias, <%= usuario %>. Tu pedido ha sido registrado.</p>
+        <a href="/productos" class="btn btn-primary" style="width: auto; display: inline-block;">Volver a la tienda ✨</a>
+      </div>
+    <% } else if (carrito.length === 0) { %>
+      <div class="empty-cart">
+        <p>Tu carrito está vacío</p>
+        <a href="/productos" class="btn btn-secondary" style="width: auto; display: inline-block; margin-top: 1rem;">Volver a la tienda</a>
+      </div>
+    <% } else { %>
+      <div class="cart-layout">
+        <div class="cart-items card">
+          <% carrito.forEach(item => { %>
+            <div class="item-row">
+              <img class="item-img" src="<%= item.imagenUrl %>" alt="<%= item.nombre %>">
+              <div class="item-details">
+                <h3><%= item.nombre %></h3>
+                <p><%= item.artista %> • Cantidad: <%= item.cantidad %></p>
+              </div>
+              <div class="item-price">$<%= item.precio * item.cantidad %></div>
+            </div>
+          <% }) %>
+        </div>
+
+        <div class="cart-resume card">
+          <h2 class="resume-title">Resumen</h2>
+          <div class="total-price">$<%= total %></div>
+          
+          <a href="/carrito/envio" class="btn btn-primary">Proceder al pago </a>
+          <a href="/carrito/vaciar" class="btn btn-secondary">Vaciar carrito</a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>
+
+

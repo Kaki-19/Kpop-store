@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPop Store </title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f0f0; }
+    nav { background: #ff6b9d; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    nav a { color: white; text-decoration: none; margin-left: 1rem; font-weight: bold; }
+    nav .logo { font-size: 1.3rem; }
+    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+    .btn-primary { background: #ff6b9d; color: white; }
+    .btn-danger { background: #e74c3c; color: white; }
+    .btn-secondary { background: #888; color: white; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #ff6b9d; color: white; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 4px; font-weight: bold; }
+    input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .card { background: white; padding: 2rem; border-radius: 8px; max-width: 400px; margin: 2rem auto; }
+    .error { color: red; margin-bottom: 1rem; }
+    h1 { margin-bottom: 1.5rem; color: #333; }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="logo"> KPop Store</span>
+    <div>
+      <a href="/productos">Productos</a>
+      <a href="/pedidos">Pedidos</a>
+      <a href="/auth/logout">Cerrar sesión</a>
+    </div>
+  </nav>
+  <div class="container">
+    <%- body %>
+  </div>
+</body>
+</html>

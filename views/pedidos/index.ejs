@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedidos - KPop Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: #fdf6ff; min-height: 100vh; }
+    nav {
+      background: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(255,182,217,0.2);
+      border-bottom: 2px solid #ffe4f3;
+    }
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff9de2, #b39ddb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links a { color: #aaa; text-decoration: none; margin-left: 1.5rem; font-weight: 700; }
+    .nav-links a:hover { color: #ff9de2; }
+    .container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 800; color: #555; }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: linear-gradient(135deg, #ff9de2, #b39ddb); color: white; }
+    .btn-danger { background: #ffe4f0; color: #ff6b9d; }
+    .btn-secondary { background: #f0e6ff; color: #9b7fd4; }
+    
+    /* Contenedor dinámico donde se inyectan las tarjetas */
+    #pedidos-container { width: 100%; }
+
+    .pedido-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(255,182,217,0.15);
+      border: 2px solid #ffeef8;
+      margin-bottom: 1rem;
+      transition: transform 0.2s;
+    }
+    .pedido-card:hover { transform: translateY(-2px); }
+    .pedido-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pedido-nombre { font-size: 1.1rem; font-weight: 800; color: #555; }
+    .pedido-artista { font-size: 0.85rem; color: #aaa; margin-top: 2px; }
+    .pedido-total { font-size: 1.5rem; font-weight: 800; color: #ff9de2; }
+    .pedido-details {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .detail-pill {
+      background: #fdf6ff;
+      border: 1px solid #f0e6ff;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.82rem;
+      color: #888;
+      font-weight: 600;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-pendiente { background: #fff8e6; color: #f7c05e; }
+    .badge-enviado { background: #e6f3ff; color: #7eb8f7; }
+    .badge-entregado { background: #e6fff3; color: #5ec98a; }
+    .badge-cancelado { background: #ffe4f0; color: #ff6b9d; }
+    .pedido-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .empty { text-align: center; padding: 4rem; color: #ccc; }
+    .empty .emoji { font-size: 4rem; margin-bottom: 1rem; }
+    .empty p { font-size: 1.1rem; font-weight: 600; }
+    .empty a { color: #ff9de2; text-decoration: none; font-weight: 700; }
+
+    /* Animación suave para cuando aparezcan compras nuevas */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .new-order-anim { animation: slideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-logo">KPop Store</span>
+    <div class="nav-links">
+      <a href="/pedidos/dashboard">Dashboard</a>
+      <a href="/productos">Productos</a>
+      <a href="/pedidos">Pedidos</a>
+      <a href="/auth/logout">Salir</a>
+    </div> </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Panel de Pedidos</h1>
+      <a href="/pedidos/nuevo" class="btn btn-primary">+ Nuevo pedido</a>
+    </div>
+
+    <div id="pedidos-container">
+      <% if (pedidos.length === 0) { %>
+        <div class="empty" id="no-orders-placeholder">
+          <div class="emoji"></div>
+          <p>No hay pedidos registrados en el sistema aún.</p>
+          <p style="margin-top:0.5rem; font-size:0.95rem">
+            <a href="/pedidos/nuevo">¡Crea un pedido manual aquí!</a>
+          </p>
+        </div>
+      <% } else { %>
+        <% pedidos.forEach(p => { %>
+        <div class="pedido-card">
+          <div class="pedido-top">
+            <div>
+              <div class="pedido-nombre">
+                 <%= p.items[0].producto ? p.items[0].producto.nombre : 'Producto eliminado' %>
+              </div>
+              <div class="pedido-artista">
+                 <%= p.items[0].producto ? p.items[0].producto.artista : '' %>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="pedido-total">$<%= p.total %></div>
+              <span class="badge badge-<%= p.estado %>"><%= p.estado %></span>
+            </div>
+          </div>
+          <div class="pedido-details">
+            <span class="detail-pill">Cantidad: <%= p.items[0].cantidad %></span>
+            <span class="detail-pill">Precio unit: $<%= p.items[0].precioUnitario %></span>
+            <span class="detail-pill"> <%= p.direccion %></span>
+          </div>
+          <div class="pedido-actions">
+            <a href="/pedidos/editar/<%= p._id %>" class="btn btn-secondary">Editar</a>
+            <form method="POST" action="/pedidos/eliminar/<%= p._id %>" style="display:inline" onsubmit="return confirm('¿Eliminar este pedido?')">
+              <button class="btn btn-danger" type="submit">Eliminar</button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+  <div id="admin-toast" style="
+    position: fixed; bottom: 30px; left: -400px; background: white; 
+    padding: 1.2rem 1.8rem; border-radius: 20px; font-weight: 700; color: #555;
+    box-shadow: 0 8px 30px rgba(179,157,219,0.35); border: 2px solid #f0e6ff;
+    display: flex; align-items: center; gap: 14px; z-index: 99999;
+    transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 0.95rem;
+  ">
+    <span style="font-size: 1.6rem;"></span>
+    <div>
+      <span style="color: #b39ddb; display: block; font-size: 0.8rem; text-transform: uppercase;">¡Alerta de Venta!</span>
+      <span id="toast-msg">Llegó una nueva orden en tiempo real</span>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Escuchamos el canal 'nuevoPedido' emitido por el backend
+    socket.on('nuevoPedido', (data) => {
+      
+      // 1. Ocultar el aviso de "No hay pedidos" si es que estaba activo en pantalla
+      const placeholder = document.getElementById('no-orders-placeholder');
+      if (placeholder) { placeholder.remove(); }
+
+      // 2. Construimos dinámicamente la nueva tarjeta pastel con los datos del evento
+      const container = document.getElementById('pedidos-container');
+      const nuevaTarjetaHTML = `
+        <div class="pedido-card new-order-anim">
+          <div class="pedido-top">
+            <div>
+              <div class="pedido-nombre">${data.cliente} (Nueva Orden)</div>
+              <div class="pedido-artista">Registro: ${data.fecha}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="pedido-total">$${data.total}</div>
+              <span class="badge badge-pendiente">pendiente</span>
+            </div>
+          </div>
+          <div class="pedido-details">
+            <span class="detail-pill">Verificando productos en el Dashboard...</span>
+            <span class="detail-pill"> ${data.direccion}</span>
+          </div>
+          <div class="pedido-actions">
+            <a href="/pedidos/editar/${data.id}" class="btn btn-secondary">Editar</a>
+            <form method="POST" action="/pedidos/eliminar/${data.id}" style="display:inline" onsubmit="return confirm('¿Eliminar este pedido?')">
+              <button class="btn btn-danger" type="submit">Eliminar</button>
+            </form>
+          </div>
+        </div>
+      `;
+
+      // Insertamos el nuevo pedido al principio de todo el flujo
+      container.insertAdjacentHTML('afterbegin', nuevaTarjetaHTML);
+
+      // 3. Lanzamos el Toast de aviso al Administrador
+      document.getElementById('toast-msg').innerText = `Pedido nuevo por $${data.total}`;
+      const toast = document.getElementById('admin-alert' ? 'admin-alert' : 'admin-toast');
+      toast.style.left = '30px';
+
+      setTimeout(() => {
+        toast.style.left = '-400px';
+      }, 4500);
+    });
+
+    // Si otro administrador cambia un estado o elimina, recargamos la lista para sincronizar datos
+    socket.on('actualizarDashboard', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

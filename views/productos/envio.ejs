@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos de Envío - KPop Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: #fdf6ff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
+    
+    .checkout-card {
+      background: white; border-radius: 24px; padding: 2.5rem 2rem;
+      box-shadow: 0 4px 16px rgba(255,182,217,0.15); border: 2px solid #ffeef8;
+      max-width: 500px; width: 100%;
+    }
+    h1 { font-size: 1.6rem; font-weight: 800; color: #555; margin-bottom: 0.5rem; text-align: center; }
+    p { color: #aaa; text-align: center; font-size: 0.9rem; margin-bottom: 2rem; }
+    
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-weight: 700; color: #777; margin-bottom: 0.4rem; font-size: 0.9rem; }
+    .form-control {
+      width: 100%; padding: 12px 16px; border: 2px solid #ffeef8; border-radius: 12px;
+      font-family: 'Nunito', sans-serif; font-size: 0.95rem; color: #555; background: #fffcfd; transition: border-color 0.2s;
+    }
+    .form-control:focus { outline: none; border-color: #ff9de2; background: white; }
+    
+    .form-row { display: flex; gap: 1rem; }
+    .form-row .form-group { flex: 1; }
+
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      font-family: 'Nunito', sans-serif; font-weight: 700; cursor: pointer;
+      font-size: 1rem; text-align: center; text-decoration: none; display: inline-block;
+      transition: opacity 0.2s; margin-top: 1rem;
+    }
+    .btn-primary { background: linear-gradient(135deg, #ff9de2, #b39ddb); color: white; box-shadow: 0 4px 12px rgba(255,157,226,0.3); }
+    .btn:hover { opacity: 0.9; }
+    .btn-link { background: transparent; color: #aaa; margin-top: 0.5rem; font-size: 0.9rem; }
+    .btn-link:hover { color: #ff9de2; }
+  </style>
+</head>
+<body>
+  <div class="checkout-card">
+    <h1>✨ Datos de Envío</h1>
+    <p>Completa tu información para recibir tus artículos de K-Pop</p>
+    
+    <form action="/carrito/comprar" method="POST">
+      <div class="form-group">
+        <label for="nombre">Nombre Completo de quien recibe</label>
+        <input type="text" id="nombre" name="nombreDestinatario" class="form-control" required placeholder="Ej. Jisu Kim">
+      </div>
+      
+      <div class="form-group">
+        <label for="direccion">Dirección (Calle, Número, Colonia)</label>
+        <input type="text" id="direccion" name="direccion" class="form-control" required placeholder="Av. de las Rosas #123, Col. Centro">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ciudad">Ciudad</label>
+          <input type="text" id="ciudad" name="ciudad" class="form-control" required placeholder="Culiacán">
+        </div>
+        <div class="form-group">
+          <label for="cp">Código Postal</label>
+          <input type="text" id="cp" name="cp" class="form-control" required placeholder="80000">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="telefono">Teléfono de contacto</label>
+        <input type="tel" id="telefono" name="telefono" class="form-control" required placeholder="6671234567">
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Confirmar Pedido y Pagar </button>
+      
+      <a href="/carrito" class="btn btn-link">Cancelar y volver al carrito</a>
+    </form>
+  </div>
+</body>
+</html>
