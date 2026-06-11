@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const Usuario = require('../models/usuario');
+const Usuario = require('../models/Usuario');
 // Mostrar formulario de registro
 router.get('/registro', (req, res) => {
   res.render('auth/registro', { error: null });
