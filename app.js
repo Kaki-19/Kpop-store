@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
    🛣️ ENRUTADORES
    ========================================================================== */
 app.use('/auth', require('./routes/auth'));
-app.use('/productos', require('./routes/productos'));
+app.use('/productos', require('./routes/Productos'));
 app.use('/pedidos', require('./routes/pedidos'));
 
 // Registro blindado para el enrutador del carrito
