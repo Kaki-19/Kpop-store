@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const Usuario = require('./models/Usuario');
+const Usuario = require('./models/usuario');
 const Producto = require('./models/Producto');
 const Pedido = require('./models/Pedido');
 
