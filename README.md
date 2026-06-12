@@ -1,7 +1,6 @@
 🌸 KPop Store
 
-
-Tema: Plataforma de gestión y comercio electrónico especializada en artículos, álbumes y merchandising oficial de K-Pop.
+Tema: Tienda de comercio electrónico especializada en mercancía oficial de K-Pop.
 Descripción: KPop Store es una plataforma web completa que permite a los usuarios explorar un catálogo diverso de productos (álbumes, photocards, lightsticks y ropa). Incluye un sistema de autenticación de usuarios, un dashboard administrativo para el seguimiento de pedidos y corte de caja, además de una integración profesional con Cloudinary para la gestión de imágenes.
 
 Entidades y Relación
